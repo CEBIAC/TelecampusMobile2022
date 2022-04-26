@@ -13,19 +13,19 @@ echo "> gulp watch &"
 gulp watch &
 
 # Remove unknown arguments and prepare angular target.
-args=("$@")
-angulartarget="serve"
-total=${#args[@]}
-for ((i=0; i<total; ++i)); do
-    case ${args[i]} in
-        --project=*)
-            unset args[i];
-            ;;
-        --platform=*)
-            angulartarget="ionic-cordova-serve";
-            ;;
-    esac
-done
+# args=("$@")
+# angulartarget="serve"
+# total=${#args[@]}
+# for ((i=0; i<total; ++i)); do
+#     case ${args[i]} in
+#         --project=*)
+#             unset args[i];
+#             ;;
+#         --platform=*)
+#             angulartarget="ionic-serve";
+#             ;;
+#     esac
+# done
 
 # Serve app.
 echo "> NODE_OPTIONS=--max-old-space-size=4096 ng run app:$angulartarget ${args[@]}"

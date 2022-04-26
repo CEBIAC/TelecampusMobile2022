@@ -29,6 +29,10 @@ import { ModalController } from '@singletons';
 })
 export class CoreLoginSiteOnboardingComponent {
 
+    constructor(){
+        this.next(new Event('click'))
+    }
+
     step = 0;
 
     /**

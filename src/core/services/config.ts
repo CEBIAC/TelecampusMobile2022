@@ -25,6 +25,7 @@ import { asyncInstance } from '../utils/async-instance';
 import { CorePromisedValue } from '@classes/promised-value';
 import { CoreBrowser } from '@singletons/browser';
 
+
 declare module '@singletons/events' {
 
     /**
@@ -57,6 +58,8 @@ export class CoreConfigProvider {
     ready(): Promise<void> {
         return this.isReady;
     }
+
+
 
     /**
      * Initialize.

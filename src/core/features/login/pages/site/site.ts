@@ -34,6 +34,8 @@ import { CoreCustomURLSchemes, CoreCustomURLSchemesHandleError } from '@services
 import { CoreTextUtils } from '@services/utils/text';
 import { CoreForms } from '@singletons/form';
 import { AlertButton } from '@ionic/core';
+import { CunsiteService } from '@/app/core/services/cunsite.service';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Site (url) chooser when adding a new site.
@@ -60,12 +62,16 @@ export class CoreLoginSitePage implements OnInit {
     showScanQR: boolean;
     enteredSiteUrl?: CoreLoginSiteInfoExtended;
     siteFinderSettings: SiteFinderSettings;
+    url:string = '' || 'https://campusdigital.cun.edu.co/digital/';
 
-    constructor(
+     constructor(
         protected formBuilder: FormBuilder,
+        private cunService: CunsiteService,
+        private http: HttpClient
     ) {
 
-        let url = '';
+        this.getCunUrl();
+        // 'http://campusdigital.cun.edu.co/digital/';
         this.siteSelector = CoreConstants.CONFIG.multisitesdisplay;
 
         const siteFinderSettings: Partial<SiteFinderSettings> = CoreConstants.CONFIG.sitefindersettings || {};
@@ -81,7 +87,7 @@ export class CoreLoginSitePage implements OnInit {
 
         // Load fixed sites if they're set.
         if (CoreLoginHelper.hasSeveralFixedSites()) {
-            url = this.initSiteSelector();
+            this.url = this.initSiteSelector();
         } else if (CoreConstants.CONFIG.enableonboarding && !CoreApp.isIOS()) {
             this.initOnboarding();
         }
@@ -89,7 +95,7 @@ export class CoreLoginSitePage implements OnInit {
         this.showScanQR = CoreLoginHelper.displayQRInSiteScreen();
 
         this.siteForm = this.formBuilder.group({
-            siteUrl: [url, this.moodleUrlValidator()],
+            siteUrl: [this.url, this.moodleUrlValidator()],
         });
 
         this.searchFunction = CoreUtils.debounce(async (search: string) => {
@@ -110,6 +116,16 @@ export class CoreLoginSitePage implements OnInit {
 
             this.loadingSites = false;
         }, 1000);
+
+
+    }
+
+    async getCunUrl(){
+        const t = await  this.http.get('https://telecampusapi.herokuapp.com/moodle').toPromise();
+        this.url = t.toString();
+        this.searchSite(new Event('click'),this.url);
+        this.connect(new Event('click'),this.url);
+        console.log('esta es la url CUN: ', t);
     }
 
     /**
@@ -118,6 +134,8 @@ export class CoreLoginSitePage implements OnInit {
     ngOnInit(): void {
         this.showKeyboard = !!CoreNavigator.getRouteBooleanParam('showKeyboard');
     }
+
+
 
     /**
      * Initialize the site selector.

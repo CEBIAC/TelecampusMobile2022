@@ -141,7 +141,7 @@ export class CoreMainMenuProvider {
 
         const currentLang = await CoreLang.getCurrentLanguage();
 
-        const fallbackLang = CoreConstants.CONFIG.default_lang || 'en';
+        const fallbackLang = CoreConstants.CONFIG.default_lang || 'es';
 
         // Get the right label for each entry and add it to the result.
         for (const id in map) {
@@ -190,7 +190,7 @@ export class CoreMainMenuProvider {
 
         const currentLang = await CoreLang.getCurrentLanguage();
 
-        const fallbackLang = CoreConstants.CONFIG.default_lang || 'en';
+        const fallbackLang = CoreConstants.CONFIG.default_lang || 'es';
         const replacements = {
             devicetype: '',
             osversion: Device.version,
